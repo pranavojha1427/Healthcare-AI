@@ -14,6 +14,7 @@ from flwr.common import (
     parameters_to_ndarrays,
 )
 import numpy as np
+from quantization import dequantize_weights
 
 class FedBuffStrategy(Strategy):
     """
@@ -59,8 +60,20 @@ class FedBuffStrategy(Strategy):
         
         # In FedBuff, we append to our asynchronous buffer
         for client, fit_res in results:
-            # We assume client applied QAFeL and we get quantized weights (mocked as normal parameters here)
-            self.update_buffer.append(parameters_to_ndarrays(fit_res.parameters))
+            quantized_weights = parameters_to_ndarrays(fit_res.parameters)
+            
+            # Extract metadata for QAFeL dequantization
+            metrics = fit_res.metrics
+            if "metadata" in metrics:
+                flat_metadata = metrics["metadata"]
+                # Convert back to list of tuples
+                metadata = [(flat_metadata[i], flat_metadata[i+1]) for i in range(0, len(flat_metadata), 2)]
+                
+                # Dequantize weights
+                dequantized_weights = dequantize_weights(quantized_weights, metadata, num_bits=8)
+                self.update_buffer.append(dequantized_weights)
+            else:
+                self.update_buffer.append(quantized_weights)
         
         print(f"FedBuff Buffer size: {len(self.update_buffer)} / {self.K}")
         

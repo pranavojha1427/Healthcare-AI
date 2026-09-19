@@ -51,14 +51,13 @@ class HealthcareEdgeClient(fl.client.NumPyClient):
         updated_weights = self.get_parameters(config={})
         quantized_weights, metadata = quantize_weights(updated_weights, num_bits=8)
         
-        # Flower expects a list of numpy arrays, we can pass quantized arrays, 
-        # but standard Flwr protocol only passes the arrays. In a real environment, 
-        # metadata should be packed into a byte stream or sent via metrics.
-        # For mock up, we send unquantized for default compatibility, or pass via custom msg.
-        # We'll just demonstrate the quantization step.
         print("Applied QAFeL bidirectional quantization compression scheme.")
         
-        return updated_weights, len(self.train_dataloader.dataset), {}
+        # Pack metadata into the metrics dict so the server can dequantize it
+        # Since metadata is a list of tuples (min, max), we can convert it to a flat list
+        flat_metadata = [val for pair in metadata for val in pair]
+        
+        return quantized_weights, len(self.train_dataloader.dataset), {"metadata": flat_metadata}
 
     def evaluate(self, parameters, config):
         self.set_parameters(parameters)

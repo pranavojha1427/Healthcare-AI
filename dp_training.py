@@ -61,11 +61,13 @@ def dp_train_model(model, train_dataloader, epochs=5, epsilon=1.0, delta=1e-5, w
     
     # Opacus requires the model, optimizer, and dataloader
     # Note: make sure dataloader doesn't drop_last=False if batch_size doesn't divide dataset perfectly
-    model, optimizer, train_dataloader = privacy_engine.make_private(
+    model, optimizer, train_dataloader = privacy_engine.make_private_with_epsilon(
         module=model,
         optimizer=optimizer,
         data_loader=train_dataloader,
-        noise_multiplier=1.2, # Will be adjusted by target epsilon
+        target_epsilon=epsilon,
+        target_delta=delta,
+        epochs=epochs,
         max_grad_norm=clipping_threshold,
     )
     
