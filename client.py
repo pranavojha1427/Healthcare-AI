@@ -1,7 +1,7 @@
 import flwr as fl
 import torch
 from collections import OrderedDict
-from dataset import generate_mock_data_json, load_data_from_json, get_timeseries_dataset
+from dataset import generate_mock_data_json, generate_data_from_api, load_data_from_json, get_timeseries_dataset
 from tft_model import create_tft_model
 from dp_training import dp_train_model
 from quantization import quantize_weights, dequantize_weights
@@ -68,8 +68,8 @@ class HealthcareEdgeClient(fl.client.NumPyClient):
         return loss, len(self.val_dataloader.dataset), {"accuracy": accuracy}
 
 def start_client():
-    # Generate mock payload for Edge Node
-    filepath = generate_mock_data_json()
+    # Generate data payload for Edge Node by querying the new backend APIs
+    filepath = generate_data_from_api()
     client = HealthcareEdgeClient(filepath)
     fl.client.start_numpy_client(server_address="127.0.0.1:8080", client=client)
 
