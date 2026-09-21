@@ -6,6 +6,7 @@ export default function Home() {
   const [inventory, setInventory] = useState<any[]>([]);
   const [footfall, setFootfall] = useState<any[]>([]);
   const [prediction, setPrediction] = useState<any>(null);
+  const [activeTab, setActiveTab] = useState("Geospatial Map");
 
   const API_URL = "http://localhost:8000";
 
@@ -183,6 +184,20 @@ export default function Home() {
 </aside>
 {/* CONTENT CANVAS (Shifted by 240px when SideNavBar is rendered) */}
 <main className="flex-1 lg:ml-60 flex flex-col min-w-0 bg-surface">
+
+        {/* NEW TAB BAR */}
+        <div className="flex border-b border-outline-variant bg-surface-container-low px-4 pt-2 space-x-6 overflow-x-auto">
+          {['Geospatial Map', 'TFT Alerts & Logistics', 'Field Node (CHO Mobile)'].map(tab => (
+            <button 
+              key={tab} 
+              onClick={() => setActiveTab(tab)} 
+              className={`pb-2 font-headline-sm whitespace-nowrap ${activeTab === tab ? 'text-secondary border-b-2 border-secondary' : 'text-on-surface-variant hover:text-on-surface'}`}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+
 {/* Sub-Bar: Command Stage Metadata & Instant Filters */}
 <div className="bg-surface-container-lowest border-b border-outline-variant px-margin py-2 flex flex-wrap items-center justify-between gap-2">
 <div className="flex items-center space-x-gutter">
@@ -200,9 +215,10 @@ export default function Home() {
 </div>
 </div>
 {/* Main Two-Column Telemetry Grid (Map Viewport + Alert Panel) */}
-<div className="grid grid-cols-1 xl:grid-cols-12 gap-0 flex-1 min-h-[calc(100vh-8.5rem)]">
-{/* GEOSPATIAL MAP CANVAS (Col 8) */}
-<div className="xl:col-span-8 flex flex-col border-r border-outline-variant bg-surface-container-lowest relative">
+<div className="flex-1 w-full flex flex-col min-h-[calc(100vh-8.5rem)]">
+{/* GEOSPATIAL MAP CANVAS */}
+{activeTab === "Geospatial Map" && (
+<div className="w-full flex flex-col bg-surface-container-lowest relative flex-1">
 {/* Map Control HUD Overlay */}
 <div className="absolute top-3 left-3 z-20 flex flex-col space-y-1 bg-surface-container-lowest/95 border border-outline-variant p-2 shadow-none backdrop-blur-sm max-w-xs">
 <div className="font-label-sm text-label-sm font-bold text-on-surface flex items-center justify-between border-b border-outline-variant pb-1">
@@ -248,68 +264,68 @@ export default function Home() {
 {/* State Highways & District Roads */}
 {/* SH-54 Baramati - Indapur Connector */}
 <path d="M 280 380 L 460 340 L 640 410" fill="none" stroke="#94a3b8" strokeWidth="3"></path>
-<text fill="#64748b" font-family="JetBrains Mono" font-size="9" transform="rotate(-12 360 350)" x="360" y="350">STATE HIGHWAY 54</text>
+<text fill="#64748b" fontFamily="JetBrains Mono" fontSize="9" transform="rotate(-12 360 350)" x="360" y="350">STATE HIGHWAY 54</text>
 {/* NH-65 Solapur Road */}
 <path d="M 120 180 L 380 230 L 640 410 L 860 480" fill="none" stroke="#cbd5e1" strokeWidth="4"></path>
-<text fill="#64748b" font-family="JetBrains Mono" font-size="9" x="180" y="195">NATIONAL HIGHWAY 65</text>
+<text fill="#64748b" fontFamily="JetBrains Mono" fontSize="9" x="180" y="195">NATIONAL HIGHWAY 65</text>
 {/* Arterial Secondary Roads */}
 <path d="M 280 380 L 260 210" fill="none" stroke="#e2e8f0" strokeDasharray="2 2" strokeWidth="1.5"></path>
 <path d="M 460 340 L 520 160" fill="none" stroke="#e2e8f0" strokeDasharray="2 2" strokeWidth="1.5"></path>
 <path d="M 640 410 L 720 230" fill="none" stroke="#e2e8f0" strokeDasharray="2 2" strokeWidth="1.5"></path>
 <path d="M 640 410 L 600 550" fill="none" stroke="#e2e8f0" strokeDasharray="2 2" strokeWidth="1.5"></path>
 {/* ACTIVE MILP TRANSFER VECTOR (Baramati SDH -> PHC Indapur) */}
-<path className="vector-active-route" d="M 280 380 Q 450 310, 640 410" fill="none" marker-end="url(#arrow)" stroke="#1d4ed8" strokeWidth="3.5"></path>
+<path className="vector-active-route" d="M 280 380 Q 450 310, 640 410" fill="none" markerEnd="url(#arrow)" stroke="#1d4ed8" strokeWidth="3.5"></path>
 {/* Active Transfer Vector Label */}
 <g transform="translate(420, 315)">
 <rect fill="#0f172a" height="24" rx="2" width="170"></rect>
-<text fill="#ffffff" font-family="JetBrains Mono" font-size="10" font-weight="bold" x="8" y="16">EV DISPATCH #9912: ETA 44m</text>
+<text fill="#ffffff" fontFamily="JetBrains Mono" fontSize="10" fontWeight="bold" x="8" y="16">EV DISPATCH #9912: ETA 44m</text>
 </g>
 {/* STABLE NODES (Green Squares) */}
 {/* CHC Shirur */}
 <g transform="translate(180, 120)">
 <rect fill="#166534" height="14" stroke="#ffffff" strokeWidth="1.5" width="14"></rect>
-<text fill="#0f172a" font-family="Public Sans" font-size="11" font-weight="600" x="18" y="11">CHC Shirur</text>
-<text fill="#166534" font-family="JetBrains Mono" font-size="9" x="18" y="22">Stock: 22d • 4.1°C</text>
+<text fill="#0f172a" fontFamily="Public Sans" fontSize="11" fontWeight="600" x="18" y="11">CHC Shirur</text>
+<text fill="#166534" fontFamily="JetBrains Mono" fontSize="9" x="18" y="22">Stock: 22d • 4.1°C</text>
 </g>
 {/* SDH Saswad */}
 <g transform="translate(140, 360)">
 <rect fill="#166534" height="14" stroke="#ffffff" strokeWidth="1.5" width="14"></rect>
-<text fill="#0f172a" font-family="Public Sans" font-size="11" font-weight="600" x="18" y="11">SDH Saswad</text>
-<text fill="#166534" font-family="JetBrains Mono" font-size="9" x="18" y="22">Stock: 19d • 3.8°C</text>
+<text fill="#0f172a" fontFamily="Public Sans" fontSize="11" fontWeight="600" x="18" y="11">SDH Saswad</text>
+<text fill="#166534" fontFamily="JetBrains Mono" fontSize="9" x="18" y="22">Stock: 19d • 3.8°C</text>
 </g>
 {/* CHC Daund (Moderate warning) */}
 <g transform="translate(460, 240)">
 <rect fill="#d97706" height="14" stroke="#ffffff" strokeWidth="1.5" width="14"></rect>
-<text fill="#0f172a" font-family="Public Sans" font-size="11" font-weight="600" x="18" y="11">CHC Daund</text>
-<text fill="#b45309" font-family="JetBrains Mono" font-size="9" x="18" y="22">Ceftriaxone: 9d (TFT Warning)</text>
+<text fill="#0f172a" fontFamily="Public Sans" fontSize="11" fontWeight="600" x="18" y="11">CHC Daund</text>
+<text fill="#b45309" fontFamily="JetBrains Mono" fontSize="9" x="18" y="22">Ceftriaxone: 9d (TFT Warning)</text>
 </g>
 {/* PHC Bhor */}
 <g transform="translate(100, 480)">
 <rect fill="#d97706" height="14" stroke="#ffffff" strokeWidth="1.5" width="14"></rect>
-<text fill="#0f172a" font-family="Public Sans" font-size="11" font-weight="600" x="18" y="11">PHC Bhor</text>
-<text fill="#b45309" font-family="JetBrains Mono" font-size="9" x="18" y="22">Oxytocin: 5.2d (TFT Warning)</text>
+<text fill="#0f172a" fontFamily="Public Sans" fontSize="11" fontWeight="600" x="18" y="11">PHC Bhor</text>
+<text fill="#b45309" fontFamily="JetBrains Mono" fontSize="9" x="18" y="22">Oxytocin: 5.2d (TFT Warning)</text>
 </g>
 {/* CHC Baramati (DONOR SURPLUS HUB) */}
 <g className="cursor-pointer" transform="translate(280, 380)">
 {/* Pulse circle for surplus node */}
 <circle cx="7" cy="7" fill="#2563eb" opacity="0.2" r="14"></circle>
 <rect fill="#1d4ed8" height="16" stroke="#ffffff" strokeWidth="2" width="16"></rect>
-<text fill="#0f172a" font-family="Public Sans" font-size="12" font-weight="bold" x="22" y="9">Baramati SDH [SURPLUS HUB]</text>
-<text fill="#1d4ed8" font-family="JetBrains Mono" font-size="10" font-weight="bold" x="22" y="22">ARV: +180 Vials • Cold Box x4</text>
+<text fill="#0f172a" fontFamily="Public Sans" fontSize="12" fontWeight="bold" x="22" y="9">Baramati SDH [SURPLUS HUB]</text>
+<text fill="#1d4ed8" fontFamily="JetBrains Mono" fontSize="10" fontWeight="bold" x="22" y="22">ARV: +180 Vials • Cold Box x4</text>
 </g>
 {/* PHC Waki (Cold Chain Breach) */}
 <g transform="translate(540, 150)">
 <polygon fill="#dc2626" points="7,0 14,14 0,14" stroke="#ffffff" strokeWidth="1.5"></polygon>
-<text fill="#0f172a" font-family="Public Sans" font-size="11" font-weight="600" x="18" y="10">CHC Waki</text>
-<text fill="#dc2626" font-family="JetBrains Mono" font-size="9" font-weight="bold" x="18" y="22">ILR-02: 9.4°C [BREACH 22m]</text>
+<text fill="#0f172a" fontFamily="Public Sans" fontSize="11" fontWeight="600" x="18" y="10">CHC Waki</text>
+<text fill="#dc2626" fontFamily="JetBrains Mono" fontSize="9" fontWeight="bold" x="18" y="22">ILR-02: 9.4°C [BREACH 22m]</text>
 </g>
 {/* PHC INDAPUR (CRITICAL DEFICIT TARGET) */}
 <g className="cursor-pointer" transform="translate(640, 410)">
 {/* Outer critical alert ring */}
 <circle className="animate-ping" cx="8" cy="8" fill="#dc2626" opacity="0.25" r="18"></circle>
 <rect fill="#dc2626" height="18" stroke="#ffffff" strokeWidth="2" width="18"></rect>
-<text fill="#991b1b" font-family="Public Sans" font-size="13" font-weight="800" x="24" y="10">PHC INDAPUR (CRITICAL DEFICIT)</text>
-<text fill="#dc2626" font-family="JetBrains Mono" font-size="10" font-weight="bold" x="24" y="23">ARV: 18h REMAINING (Surge +340%)</text>
+<text fill="#991b1b" fontFamily="Public Sans" fontSize="13" fontWeight="800" x="24" y="10">PHC INDAPUR (CRITICAL DEFICIT)</text>
+<text fill="#dc2626" fontFamily="JetBrains Mono" fontSize="10" fontWeight="bold" x="24" y="23">ARV: 18h REMAINING (Surge +340%)</text>
 </g>
 {/* Additional background minor SC / PHC cluster points */}
 <circle cx="340" cy="280" fill="#166534" r="3.5"></circle>
@@ -331,7 +347,7 @@ export default function Home() {
 <line stroke="#0f172a" strokeWidth="2" x1="0" x2="80" y1="0" y2="0"></line>
 <line stroke="#0f172a" strokeWidth="2" x1="0" x2="0" y1="-4" y2="4"></line>
 <line stroke="#0f172a" strokeWidth="2" x1="80" x2="80" y1="-4" y2="4"></line>
-<text fill="#0f172a" font-family="JetBrains Mono" font-size="9" x="24" y="-5">20 KILOMETERS</text>
+<text fill="#0f172a" fontFamily="JetBrains Mono" fontSize="9" x="24" y="-5">20 KILOMETERS</text>
 </g>
 </svg>
 {/* INTERACTIVE POPUP INSPECTOR: PHC INDAPUR (Fixed on canvas) */}
@@ -402,8 +418,10 @@ export default function Home() {
 </div>
 </div>
 </div>
-{/* RIGHT REGION: REAL-TIME TFT FORECASTING & ALERTS PANEL (Col 4) */}
-<div className="xl:col-span-4 flex flex-col bg-surface-container-lowest">
+)}
+{/* RIGHT REGION: REAL-TIME TFT FORECASTING & ALERTS PANEL */}
+{activeTab === "TFT Alerts & Logistics" && (
+<div className="w-full flex flex-col bg-surface-container-lowest flex-1 max-w-4xl mx-auto border-x border-outline-variant shadow-sm">
 {/* Panel Header */}
 <div className="p-3 border-b border-outline-variant bg-surface-container-low flex justify-between items-center">
 <div>
@@ -589,6 +607,7 @@ export default function Home() {
 </div>
 </main>
 </div>
+)}
 {/* ================= MARL + MILP REDISTRIBUTION AUTHORIZATION MODAL ================= */}
 <div className="hidden fixed inset-0 z-[1000] bg-slate-900/60 backdrop-blur-none flex items-center justify-center p-4" id="dispatchModal">
 <div className="bg-surface-container-lowest border-2 border-primary w-full max-w-3xl shadow-none">
@@ -853,6 +872,7 @@ export default function Home() {
 </nav>
 </div>
 </div>
+)}
 {/* ================= REGULATORY, AUDIT & DPDP ACT 2023 FOOTER ================= */}
 <footer className="fixed bottom-0 left-0 w-full h-7 bg-surface-container-lowest border-t border-outline-variant px-margin flex items-center justify-between z-40 text-code-sm font-code-sm text-on-surface-variant">
 <div className="flex items-center space-x-3 truncate">
