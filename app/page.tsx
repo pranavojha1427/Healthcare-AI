@@ -83,12 +83,12 @@ export default function Home() {
 <span className="font-code-sm text-code-sm text-on-error-container font-bold">DEFICIT: ORANGE (PHC Indapur)</span>
 </div>
 {/* CHO Field Simulator Toggle */}
-<button className="border border-secondary bg-surface-container-lowest text-secondary font-label-sm text-label-sm px-2.5 h-7 flex items-center space-x-1 hover:bg-surface-container transition-colors duration-150" onclick="toggleCHODrawer()">
+<button className="border border-secondary bg-surface-container-lowest text-secondary font-label-sm text-label-sm px-2.5 h-7 flex items-center space-x-1 hover:bg-surface-container transition-colors duration-150">
 <span className="material-symbols-outlined">phone_android</span>
 <span>CHO Field PWA</span>
 </button>
 {/* Emergency Override Primary CTA */}
-<button className="bg-error hover:bg-red-700 text-on-error font-body-sm text-body-sm font-semibold px-2.5 h-7 flex items-center space-x-1 border border-red-800 transition-colors duration-150" onclick="openDispatchModal()">
+<button className="bg-error hover:bg-red-700 text-on-error font-body-sm text-body-sm font-semibold px-2.5 h-7 flex items-center space-x-1 border border-red-800 transition-colors duration-150">
 <span className="material-symbols-outlined">warning</span>
 <span>Emergency Override</span>
 </button>
@@ -147,7 +147,7 @@ export default function Home() {
 </nav>
 {/* Rail Action CTA */}
 <div className="mt-4 px-2">
-<button className="w-full bg-primary text-on-primary font-label-sm text-label-sm py-2 px-2 border border-outline uppercase tracking-wider font-semibold hover:bg-surface-variant hover:text-on-surface transition-colors flex items-center justify-center space-x-1" onclick="openDispatchModal()">
+<button className="w-full bg-primary text-on-primary font-label-sm text-label-sm py-2 px-2 border border-outline uppercase tracking-wider font-semibold hover:bg-surface-variant hover:text-on-surface transition-colors flex items-center justify-center space-x-1">
 <span className="material-symbols-outlined">alt_route</span>
 <span>Authorize MILP Transfer</span>
 </button>
@@ -375,7 +375,7 @@ export default function Home() {
 </div>
 <div className="flex items-center justify-between pt-1">
 <span className="text-code-sm font-code-sm text-on-surface-variant">Recommended Donor: <span className="font-bold text-on-surface">Baramati SDH (42.6 km)</span></span>
-<button className="bg-secondary text-on-secondary font-label-sm text-label-sm px-2 py-1 font-semibold hover:bg-blue-800" onclick="openDispatchModal()">
+<button className="bg-secondary text-on-secondary font-label-sm text-label-sm px-2 py-1 font-semibold hover:bg-blue-800">
                     OPEN MILP
                   </button>
 </div>
@@ -463,7 +463,7 @@ export default function Home() {
 </div>
 </div>
 <div className="mt-3 flex items-center space-x-2">
-<button className="flex-1 bg-primary hover:bg-slate-800 text-on-primary font-label-sm text-label-sm py-1.5 px-2 border border-outline font-semibold uppercase tracking-wider flex items-center justify-center space-x-1" onclick="openDispatchModal()">
+<button className="flex-1 bg-primary hover:bg-slate-800 text-on-primary font-label-sm text-label-sm py-1.5 px-2 border border-outline font-semibold uppercase tracking-wider flex items-center justify-center space-x-1">
 <span className="material-symbols-outlined">bolt</span>
 <span>Authorize Lateral Transfer</span>
 </button>
@@ -601,7 +601,7 @@ export default function Home() {
 <span className="font-code-sm text-code-sm text-surface-variant leading-none mt-1 block">ALGORITHM: CP-LEX MILP SOLVER • CONVERGENCE: OPTIMAL (42ms)</span>
 </div>
 </div>
-<button className="text-on-primary hover:text-surface-variant" onclick="closeDispatchModal()">
+<button className="text-on-primary hover:text-surface-variant">
 <span className="material-symbols-outlined">close</span>
 </button>
 </div>
@@ -681,10 +681,10 @@ export default function Home() {
 <span>Digital Token: CMO-PUN-AUTH-909982 (DPDP Act Validated)</span>
 </div>
 <div className="flex space-x-2 w-full sm:w-auto">
-<button className="flex-1 sm:flex-none border border-outline-variant px-3 py-1.5 text-on-surface font-label-sm text-label-sm hover:bg-surface-container" onclick="closeDispatchModal()">
+<button className="flex-1 sm:flex-none border border-outline-variant px-3 py-1.5 text-on-surface font-label-sm text-label-sm hover:bg-surface-container">
               Cancel
             </button>
-<button className="flex-1 sm:flex-none bg-secondary hover:bg-blue-800 text-on-secondary font-label-sm text-label-sm px-4 py-1.5 font-bold uppercase tracking-wider flex items-center justify-center space-x-1 border border-blue-900" id="dispatchConfirmBtn" onclick="executeDispatch()">
+<button className="flex-1 sm:flex-none bg-secondary hover:bg-blue-800 text-on-secondary font-label-sm text-label-sm px-4 py-1.5 font-bold uppercase tracking-wider flex items-center justify-center space-x-1 border border-blue-900" id="dispatchConfirmBtn">
 <span className="material-symbols-outlined">send</span>
 <span>One-Click Authorize &amp; Dispatch (FHIR R4)</span>
 </button>
@@ -703,7 +703,7 @@ export default function Home() {
 <span className="material-symbols-outlined text-emerald-400">phone_android</span>
 <span className="font-headline-sm text-headline-sm font-bold text-white">CHO Field PWA (Mobile View)</span>
 </div>
-<button className="text-on-primary hover:text-surface-variant" onclick="toggleCHODrawer()">
+<button className="text-on-primary hover:text-surface-variant">
 <span className="material-symbols-outlined">close</span>
 </button>
 </div>
@@ -869,39 +869,7 @@ export default function Home() {
 </div>
 </footer>
 {/* ================= INLINE SCRIPT LOGIC FOR INTERACTION ================= */}
-<script>
-    function toggleCHODrawer() {
-      const drawer = document.getElementById('choDrawer');
-      if (drawer.classList.contains('hidden')) {
-        drawer.classList.remove('hidden');
-      } else {
-        drawer.classList.add('hidden');
-      }
-    }
 
-    function openDispatchModal() {
-      document.getElementById('dispatchModal').classList.remove('hidden');
-    }
-
-    function closeDispatchModal() {
-      document.getElementById('dispatchModal').classList.add('hidden');
-    }
-
-    function executeDispatch() {
-      const btn = document.getElementById('dispatchConfirmBtn');
-      btn.innerHTML = '<span className="material-symbols-outlined animate-spin">sync</span><span>DISPATCH AUTHORIZED (FHIR R4 RECORD COMMITTED)</span>';
-      btn.classList.remove('bg-secondary');
-      btn.classList.add('bg-emerald-700', 'border-emerald-800');
-
-      setTimeout(() => {
-        alert('SUCCESS: Transfer Vector MH-12-CZ-9912 dispatched via SH-54. Recipient PHC Indapur notified. Cryptographic audit receipt logged to DPDP ledger.');
-        closeDispatchModal();
-        btn.innerHTML = '<span className="material-symbols-outlined">send</span><span>One-Click Authorize &amp; Dispatch (FHIR R4)</span>';
-        btn.classList.add('bg-secondary');
-        btn.classList.remove('bg-emerald-700');
-      }, 700);
-    }
-  </script>
 
     </div>
   );
