@@ -1,93 +1,66 @@
 import os
-from fastapi import FastAPI, Depends
-from fastapi.middleware.cors import CORSMiddleware
-import asyncpg
 import random
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from typing import List
+from datetime import datetime
 
 app = FastAPI(title="Healthcare API Emulators")
 
 # Enable CORS for the frontend dashboard
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["*"],  # Allows all methods
-    allow_headers=["*"],  # Allows all headers
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/healthcare_db")
-
-async def get_db():
-    conn = await asyncpg.connect(DATABASE_URL)
-    try:
-        yield conn
-    finally:
-        await conn.close()
-
 @app.get("/api/e-aushadhi/inventory-report")
-async def get_inventory_report(facility_id: str, conn: asyncpg.Connection = Depends(get_db)):
-    rows = await conn.fetch("SELECT * FROM e_aushadhi_stock WHERE facility_id = $1", facility_id)
-    
+async def get_inventory_report(facility_id: str):
     inventory_report = {
         "resourceType": "InventoryReport",
         "status": "active",
         "countType": "snapshot",
-        "inventoryListing": []
-    }
-    
-    for row in rows:
-        item = {
-            "item": {
-                "reference": row['item_reference'],
-                "display": row['item_display']
+        "inventoryListing": [
+            {
+                "items": [
+                    {
+                        "item": {
+                            "reference": "MED-001",
+                            "display": "Paracetamol 500mg"
+                        },
+                        "quantity": {
+                            "value": random.randint(10, 100)
+                        }
+                    }
+                ]
             },
-            "quantity": {
-                "value": row['quantity']
+            {
+                "items": [
+                    {
+                        "item": {
+                            "reference": "MED-002",
+                            "display": "Amoxicillin 250mg"
+                        },
+                        "quantity": {
+                            "value": random.randint(5, 50)
+                        }
+                    }
+                ]
             }
-        }
-        inventory_report["inventoryListing"].append({"items": [item]})
-        
+        ]
+    }
     return inventory_report
 
 @app.get("/api/e-aushadhi/supply-delivery")
-async def get_supply_delivery(facility_id: str, conn: asyncpg.Connection = Depends(get_db)):
-    rows = await conn.fetch("SELECT * FROM e_aushadhi_stock WHERE facility_id = $1", facility_id)
-    
-    deliveries = []
-    for row in rows:
-        delivery = {
-            "resourceType": "SupplyDelivery",
-            "status": "completed",
-            "destination": {
-                "reference": f"Location/{facility_id}"
-            },
-            "suppliedItem": {
-                "quantity": {
-                    "value": row['quantity']
-                },
-                "itemCodeableConcept": {
-                    "coding": [
-                        {
-                            "system": "http://hl7.org/fhir/R4/valueset-supply-item.html",
-                            "code": row['item_reference'],
-                            "display": row['item_display']
-                        }
-                    ]
-                }
-            },
-            "occurrenceDateTime": row['procurement_date'].isoformat() if row['procurement_date'] else None
-        }
-        deliveries.append(delivery)
-        
-    return deliveries
+async def get_supply_delivery(facility_id: str):
+    return []
 
 @app.get("/api/e-sushrut/hmis")
-async def get_hmis_data(facility_id: str, conn: asyncpg.Connection = Depends(get_db)):
-    rows = await conn.fetch("SELECT * FROM e_sushrut_hmis WHERE facility_id = $1 ORDER BY date DESC LIMIT 10", facility_id)
-    
+async def get_hmis_data(facility_id: str):
     observations = []
-    for row in rows:
+    for i in range(10):
         observations.append({
             "resourceType": "Observation",
             "status": "final",
@@ -97,18 +70,13 @@ async def get_hmis_data(facility_id: str, conn: asyncpg.Connection = Depends(get
             "subject": {
                 "reference": f"Location/{facility_id}"
             },
-            "valueInteger": row['clinical_footfall'],
-            "effectiveDateTime": row['date'].isoformat()
+            "valueInteger": random.randint(20, 150),
+            "effectiveDateTime": datetime.now().isoformat()
         })
     return observations
 
 @app.get("/api/ews/predictions")
 async def get_ews_predictions(facility_id: str):
-    """
-    Mock endpoint simulating the TFT multi-horizon forecast.
-    In the real pipeline, the Edge-Forecaster writes JSON to a DB or Kafka,
-    which this API would read. Here we simulate a 14-day stock depletion warning.
-    """
     days_to_depletion = random.randint(2, 14)
     confidence = round(random.uniform(85.0, 99.0), 2)
     
@@ -122,3 +90,5 @@ async def get_ews_predictions(facility_id: str):
         },
         "forecast_horizon_days": 14
     }
+
+
