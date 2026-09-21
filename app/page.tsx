@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 
 export default function Home() {
-  const [facility, setFacility] = useState("PHC_01");
+  const [facility, setFacility] = useState("PHC_001");
   const [inventory, setInventory] = useState<any[]>([]);
   const [footfall, setFootfall] = useState<any[]>([]);
   const [prediction, setPrediction] = useState<any>(null);
