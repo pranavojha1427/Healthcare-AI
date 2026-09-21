@@ -651,7 +651,7 @@ export default function Home() {
 <span className="font-label-sm text-label-sm text-on-surface font-bold uppercase">FHIR R4 SupplyDelivery JSON Manifest Preview:</span>
 <span className="font-code-sm text-code-sm text-on-surface-variant">SNOMED CT: 424519002</span>
 </div>
-<pre className="bg-slate-900 text-emerald-400 p-2.5 font-code-sm text-code-sm overflow-x-auto border border-outline max-h-36 select-text">{
+<pre className="bg-slate-900 text-emerald-400 p-2.5 font-code-sm text-code-sm overflow-x-auto border border-outline max-h-36 select-text">{`{
   "resourceType": "SupplyDelivery",
   "identifier": [{ "system": "https://nhm.gov.in/faile", "value": "DISP-2025-0549" }],
   "status": "in-progress",
@@ -672,7 +672,7 @@ export default function Home() {
     "url": "http://mohfw.gov.in/fhir/StructureDefinition/coldchain-temp",
     "valueDecimal": 4.1
   }]
-}</pre>
+}`}</pre>
 </div>
 {/* Action / Authorization Bar */}
 <div className="pt-2 border-t border-outline-variant flex flex-col sm:flex-row items-center justify-between gap-2">
