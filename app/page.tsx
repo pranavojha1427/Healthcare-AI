@@ -64,13 +64,7 @@ export default function Home() {
 </div>
 </div>
 {/* Navigation Links & Live Kafka Broker Telemetry */}
-<nav className="hidden xl:flex items-center space-x-gutter">
-<a className="text-secondary dark:text-secondary border-b-2 border-secondary dark:border-secondary font-headline-sm text-headline-sm pb-1" href="#">Geospatial Grid</a>
-<a className="text-on-surface-variant dark:text-on-surface-variant font-headline-sm text-headline-sm hover:text-on-surface dark:hover:text-on-surface pb-1" href="#">TFT Alerts</a>
-<a className="text-on-surface-variant dark:text-on-surface-variant font-headline-sm text-headline-sm hover:text-on-surface dark:hover:text-on-surface pb-1" href="#">Lateral Dispatch</a>
-<a className="text-on-surface-variant dark:text-on-surface-variant font-headline-sm text-headline-sm hover:text-on-surface dark:hover:text-on-surface pb-1" href="#">Cold-Chain Telemetry</a>
-<a className="text-on-surface-variant dark:text-on-surface-variant font-headline-sm text-headline-sm hover:text-on-surface dark:hover:text-on-surface pb-1" href="#">DPDP Audit Log</a>
-</nav>
+
 {/* Telemetry Status Badges & Trailing Actions */}
 <div className="flex items-center space-x-gutter">
 {/* Kafka Stream Indicator */}
@@ -172,7 +166,7 @@ export default function Home() {
 </div>
 {/* Rail Footer Items */}
 <div className="pt-2 border-t border-outline-variant space-y-1">
-<a className="flex items-center space-x-2 text-on-surface-variant font-normal px-3 py-1.5 hover:bg-surface-container text-label-md font-label-md" href="javascript:toggleCHODrawer()">
+<a className="flex items-center space-x-2 text-on-surface-variant font-normal px-3 py-1.5 hover:bg-surface-container text-label-md font-label-md" href="#" onClick={(e) => { e.preventDefault(); setActiveTab("Field Node (CHO Mobile)"); }}>
 <span className="material-symbols-outlined">phone_android</span>
 <span>CHO Field Simulator</span>
 </a>
@@ -713,7 +707,7 @@ export default function Home() {
 </div>
 </div>
 {/* ================= INTERACTIVE CHO FIELD MOBILE PWA VIEW (DRAWER / EMULATOR) ================= */}
-<div className="hidden fixed inset-y-0 right-0 z-[100] w-full max-w-[420px] bg-slate-900/40 backdrop-blur-none flex justify-end" id="choDrawer">
+{activeTab === "Field Node (CHO Mobile)" && (<div className="w-full sm:w-96 mx-auto bg-surface-container-lowest shadow-2xl flex flex-col flex-1 border border-outline-variant mt-4" id="choDrawer">
 {/* Mobile Frame Outer Container */}
 <div className="w-full h-full bg-surface border-l-2 border-primary flex flex-col shadow-none">
 {/* Drawer Header */}

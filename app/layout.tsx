@@ -17,7 +17,7 @@ export default function RootLayout({
       <head>
         <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-        <Script src="https://cdn.tailwindcss.com?plugins=forms,container-queries" strategy="beforeInteractive" />
+        
         <Script id="tailwind-config" strategy="beforeInteractive" dangerouslySetInnerHTML={{ __html: `
           tailwind.config = {
             darkMode: "class",
