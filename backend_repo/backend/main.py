@@ -1,20 +1,9 @@
 import os
 from fastapi import FastAPI, Depends
-from fastapi.middleware.cors import CORSMiddleware
 import asyncpg
-import random
 from typing import List
 
 app = FastAPI(title="Healthcare API Emulators")
-
-# Enable CORS for the frontend dashboard
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins
-    allow_credentials=True,
-    allow_methods=["*"],  # Allows all methods
-    allow_headers=["*"],  # Allows all headers
-)
 
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/healthcare_db")
 
@@ -101,25 +90,3 @@ async def get_hmis_data(facility_id: str, conn: asyncpg.Connection = Depends(get
             "effectiveDateTime": row['date'].isoformat()
         })
     return observations
-
-@app.get("/api/ews/predictions")
-async def get_ews_predictions(facility_id: str):
-    """
-    Mock endpoint simulating the TFT multi-horizon forecast.
-    In the real pipeline, the Edge-Forecaster writes JSON to a DB or Kafka,
-    which this API would read. Here we simulate a 14-day stock depletion warning.
-    """
-    # Simulate a forecast indicating when a critical Class V item will stock out
-    days_to_depletion = random.randint(2, 14)
-    confidence = round(random.uniform(85.0, 99.0), 2)
-    
-    return {
-        "facility_id": facility_id,
-        "prediction": {
-            "critical_item": "Paracetamol 500mg (Class V)",
-            "estimated_depletion_days": days_to_depletion,
-            "confidence_interval_percent": confidence,
-            "status": "CRITICAL" if days_to_depletion <= 5 else "STABLE"
-        },
-        "forecast_horizon_days": 14
-    }
