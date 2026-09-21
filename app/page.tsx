@@ -604,10 +604,10 @@ export default function Home() {
 </div>
 </div>
 </div>
+)}
 </div>
 </main>
 </div>
-)}
 {/* ================= MARL + MILP REDISTRIBUTION AUTHORIZATION MODAL ================= */}
 <div className="hidden fixed inset-0 z-[1000] bg-slate-900/60 backdrop-blur-none flex items-center justify-center p-4" id="dispatchModal">
 <div className="bg-surface-container-lowest border-2 border-primary w-full max-w-3xl shadow-none">
